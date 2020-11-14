@@ -1,5 +1,6 @@
 #include "minishell.h"
 #include "minishell_flag.h"
+#define DEBUG
 
 t_exe	*exe_new(t_exe *current, int arg_size)
 {
@@ -26,7 +27,9 @@ void	arg_clear(t_arg **arg)
 	if ((*arg)->prev)
 		while ((*arg)->prev)
 		{
-			// printf("[%p]arg_clear_prev\n", (*arg));
+			#ifdef DEBUG
+			printf("[%p]arg_clear_prev\n", (*arg));
+			#endif
 			ft_str_del((*arg)->str);
 			(*arg) = (*arg)->prev;
 			free((*arg)->next);
@@ -34,14 +37,18 @@ void	arg_clear(t_arg **arg)
 	else
 		while ((*arg)->next)
 		{
-			// printf("[%p]arg_clear_next\n", (*arg));
+			#ifdef DEBUG
+			printf("[%p]arg_clear_next\n", (*arg));
+			#endif
 			ft_str_del((*arg)->str);
 			(*arg) = (*arg)->next;
 			free((*arg)->prev);
 		}
 	if (*arg)
 	{
-		// printf("[%p]arg_clear_fine\n", (*arg));
+		#ifdef DEBUG
+		printf("[%p]arg_clear_fine\n", (*arg));
+		#endif
 		ft_str_del((*arg)->str);
 		free((*arg));
 		*arg = 0;
@@ -70,9 +77,9 @@ void	exe_clear(t_exe **exe)
 	if ((*exe)->prev)
 		while ((*exe)->prev)
 		{
-			// printf("[%p]exe_clear_prev\n", (*exe));
-			// printf("[%p]argv\n", (*exe)->argv);
-			// printf("[%p]argv[0]\n", (*exe)->argv[0]);
+			#ifdef DEBUG
+			printf("[%p]exe_clear_prev\n", (*exe));
+			#endif
 			free((*exe)->argv);
 			(*exe) = (*exe)->prev;
 			free((*exe)->next);
@@ -80,19 +87,18 @@ void	exe_clear(t_exe **exe)
 	else
 		while ((*exe)->next)
 		{
-			// printf("[%p]exe_clear_next\n", (*exe));
-			// printf("[%p]argv\n", (*exe)->argv);
-			// printf("[%p]argv[0]\n", (*exe)->argv[0]);
+			#ifdef DEBUG
+			printf("[%p]exe_clear_next\n", (*exe));
+			#endif
 			free((*exe)->argv);
 			(*exe) = (*exe)->next;
 			free((*exe)->prev);
 		}
 	if (*exe)
 	{
-		// printf("[%p]exe_clear_fine\n", (*exe));
-		// printf("[%p]argv\n", (*exe)->argv);
-		// printf("[%p]argv[0]\n", (*exe)->argv[0]);
-		// printf("[%s]argv[0]\n", (*exe)->argv[0]);
+		#ifdef DEBUG
+		printf("[%p]exe_clear_fine\n", (*exe));
+		#endif
 		free((*exe)->argv);
 		free((*exe));
 		*exe = 0;
@@ -107,7 +113,6 @@ void	argv_append(t_exe *exe, t_arg *arg)
 	while (*tmp)
 		tmp++;
 	*tmp++ = arg->str->str;
-	// printf("[%p][%s]append\n", tmp[-1], tmp[-1]);
 	*tmp = 0;
 }
 
@@ -158,7 +163,6 @@ t_exe	*build_exe_tree(t_arg **arg, int arg_size)
 			exe->fd[1] = fd[1];
 			exe = exe_new(exe, arg_size);
 			exe->fd[0] = fd[0];
-
 		}
 		else if ((*arg)->type == ENDLINE)
 		{
@@ -166,7 +170,6 @@ t_exe	*build_exe_tree(t_arg **arg, int arg_size)
 		}
 		else
 		{
-			// ft_putstr_fd(arg[0]->str->str, 1);
 			argv_append(exe, *arg);
 		}
 		if ((*arg)->next)
