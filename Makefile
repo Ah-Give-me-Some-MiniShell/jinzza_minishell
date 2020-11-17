@@ -6,7 +6,7 @@
 #    By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 16:34:45 by yujo              #+#    #+#              #
-#    Updated: 2020/11/13 20:57:51 by minckim          ###   ########.fr        #
+#    Updated: 2020/11/17 00:50:10 by minckim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,13 @@ FILE_SRCS = \
 	extract_word\
 	get_command_line\
 	build_exe_tree\
+	execute_arg\
 	builtin_env\
-	builtin_echo
+	builtin_cd\
+	builtin_pwd\
+	builtin_echo\
+	builtin_export\
+	builtin_exit
 
 	# execute_arg\
 

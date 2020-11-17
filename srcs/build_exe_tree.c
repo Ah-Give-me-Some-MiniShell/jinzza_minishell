@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   build_exe_tree.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/14 16:28:52 by minckim           #+#    #+#             */
+/*   Updated: 2020/11/16 23:53:49 by minckim          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "minishell_flag.h"
-#define DEBUG
+// #define DEBUG
 
 t_exe	*exe_new(t_exe *current, int arg_size)
 {
@@ -127,32 +139,47 @@ t_exe	*build_exe_tree(t_arg **arg, int arg_size)
 	{
 		if ((*arg)->type == RE_IN)
 		{
+			(*arg) = (*arg)->next;
 			if (exe->fd[0] != 0)
 				close(exe->fd[0]);
 			if ((exe->fd[0] = open((*arg)->str->str, O_RDONLY)) < 0)
 			{
+				#ifdef DEBUG
+				printf("redirection in failed\n");
+				#endif
+				ft_printf("%s\n", strerror(get_errno()));
 				exe_clear(&exe);
 				return (0);
 			}
 		}
 		else if ((*arg)->type == RE_OUT)
 		{
+			(*arg) = (*arg)->next;
 			if (exe->fd[1] != 1)
 				close(exe->fd[1]);
 			if ((exe->fd[1] = \
 			open((*arg)->str->str, O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
 			{
+				#ifdef DEBUG
+				printf("redirection out failed\n");
+				#endif
+				ft_printf("%s\n", strerror(get_errno()));
 				exe_clear(&exe);
 				return (0);
 			}
 		}
 		else if ((*arg)->type == RE_APP)
 		{
+			(*arg) = (*arg)->next;
 			if (exe->fd[1] != 1)
 				close(exe->fd[1]);
 			if ((exe->fd[1] = \
 			open((*arg)->str->str, O_WRONLY | O_CREAT | O_APPEND, 0644)) < 0)
 			{
+				#ifdef DEBUG
+				printf("redirection app failed\n");
+				#endif
+				ft_printf("%s\n", strerror(get_errno()));
 				exe_clear(&exe);
 				return (0);
 			}
@@ -161,8 +188,16 @@ t_exe	*build_exe_tree(t_arg **arg, int arg_size)
 		{
 			pipe(fd);
 			exe->fd[1] = fd[1];
-			exe = exe_new(exe, arg_size);
-			exe->fd[0] = fd[0];
+			if ((*arg)->next)
+			{
+				exe = exe_new(exe, arg_size);
+				exe->fd[0] = fd[0];
+			}
+			else
+			{
+				exe_clear(&exe);
+				return (0);
+			}
 		}
 		else if ((*arg)->type == ENDLINE)
 		{
@@ -180,3 +215,87 @@ t_exe	*build_exe_tree(t_arg **arg, int arg_size)
 	return (exe);
 }
 
+/*
+t_exe	*build_exe_tree(t_arg **arg, int arg_size)
+{
+	t_exe	*exe;
+	int		fd[2];
+
+	exe = 0;
+	exe = exe_new(exe, arg_size);
+	while ((*arg) && *(*arg)->str->str)
+	{
+		if ((*arg)->type == RE_IN)
+		{
+			(*arg) = (*arg)->next;
+			if (exe->fd[0] != 0)
+				close(exe->fd[0]);
+			if ((exe->fd[0] = open((*arg)->str->str, O_RDONLY)) < 0)
+			{
+				#ifdef DEBUG
+				printf("redirection in failed\n");
+				#endif
+				exe_clear(&exe);
+				return (0);
+			}
+		}
+		else if ((*arg)->type == RE_OUT)
+		{
+			(*arg) = (*arg)->next;
+			if (exe->fd[1] != 1)
+				close(exe->fd[1]);
+			if ((exe->fd[1] = \
+			open((*arg)->str->str, O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
+			{
+				#ifdef DEBUG
+				printf("redirection out failed\n");
+				#endif
+				exe_clear(&exe);
+				return (0);
+			}
+		}
+		else if ((*arg)->type == RE_APP)
+		{
+			(*arg) = (*arg)->next;
+			if (exe->fd[1] != 1)
+				close(exe->fd[1]);
+			if ((exe->fd[1] = \
+			open((*arg)->str->str, O_WRONLY | O_CREAT | O_APPEND, 0644)) < 0)
+			{
+				#ifdef DEBUG
+				printf("redirection app failed\n");
+				#endif
+				exe_clear(&exe);
+				return (0);
+			}
+		}
+		else if ((*arg)->type == RE_PIPE)
+		{
+			// (*arg) = (*arg)->next;
+			pipe(fd);
+			exe->fd[1] = fd[1];
+			*arg = (*arg)->next;
+			#ifdef DEBUG
+			printf("[%s]\n", (*arg)->str->str);
+			#endif
+			exe->next = build_exe_tree(arg, arg_size);
+			exe->next->fd[0] = fd[0];
+			return (exe);
+		}
+		else if ((*arg)->type == ENDLINE)
+		{
+			break ;
+		}
+		else
+		{
+			argv_append(exe, *arg);
+		}
+		if ((*arg)->next)
+			(*arg) = (*arg)->next;
+		else
+			break;
+	}
+	return (exe);
+}
+
+*/

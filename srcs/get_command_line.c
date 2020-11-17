@@ -6,12 +6,41 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/12 11:29:22 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/14 00:54:24 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/17 00:10:57 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "minishell_flag.h"
+
+
+int	check_syntax(t_arg **arg)
+{
+	t_arg	*head;
+	int		check;
+
+	check = 0;
+	head = *arg;
+	while (head)
+	{
+		if (head->type & (RE_IN | RE_OUT | RE_PIPE | ENDLINE))
+			check += 1;
+		else
+			check = 0;
+		if (check > 1)
+		{
+			ft_printf("syntax error near unexpected token '%s'\n", \
+			head->str->str);
+			arg_clear(arg);
+			return (1);
+		}
+		head = head->next;
+	}
+	return (0);
+}
+
+
+
 
 t_arg	*arg_new(t_arg *curr, t_str *str, int type)
 {

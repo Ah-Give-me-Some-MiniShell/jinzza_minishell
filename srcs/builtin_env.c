@@ -6,21 +6,11 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 20:37:56 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/11 17:43:31 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/17 11:59:26 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		print_env(t_env *env)
-{
-	while (env)
-	{
-		ft_printf("%s=%s\n", env->key, env->val);
-		env = env->next;
-	}
-	return (0);
-}
 
 char	**env_to_arr(t_env *env)
 {
@@ -49,53 +39,74 @@ char	**env_to_arr(t_env *env)
 	return (arr_head);
 }
 
-t_env	*env_new(char *str, t_env *current)
+t_env	*env_new(char *str)
 {
-	t_env	*result;
+	t_env	*env;
 	char	*start;
 
-	if (!(result = malloc(sizeof(t_env))))
-		return (0);
 	start = str;
 	while (*str && *str != '=')
 		str++;
-	if (!(result->key = ft_substr(start, 0, str - start)))
+	if (!*str)
 		return (0);
-	start = ++str;
-	while (*str)
-		str++;
-	if (!(result->val = ft_substr(start, 0, str - start)))
+	if (!(env = malloc(sizeof(t_env))))
 		return (0);
-	if (current)
-		current->next = result;
-	result->prev = current;
-	result->next = 0;
-	return (result);
+	if (!(env->key = ft_substr(start, 0, str - start)))
+	{
+		free(env);
+		return (0);
+	}
+	if (!*str || !(env->val = ft_strdup(++str)))
+	{
+		free(env->key);
+		free(env);
+		return (0);
+	}
+	env->prev = 0;
+	env->next = 0;
+	return (env);
 }
 
-int		env_init(t_env **lstenv, char **env)
+
+void	add_env(t_env **lstenv, t_env *env)
 {
-	char		*str;
-	char		*str_start;
-	extern int	errno;
+	while (*lstenv && (*lstenv)->next)
+		(*lstenv) = (*lstenv)->next;
+	if (env)
+	{
+		if (*lstenv)
+			(*lstenv)->next = env;
+		env->prev = *lstenv;
+		env->next = 0;
+		(*lstenv) = env;
+	}
+}
+
+void	env_init(t_env **lstenv, char **env)
+{
+	char	**env_tmp;
 
 	*lstenv = 0;
-	while (*env)
+	env_tmp = env;
+	while (*env_tmp)
 	{
-		if (!*lstenv)
-		{
-			if (!((*lstenv) = env_new(*env, 0)))
-				return (errno);
-		}
-		else
-		{
-			if (!((*lstenv)->next = env_new(*env, (*lstenv))))
-				return (errno);
-			(*lstenv) = (*lstenv)->next;
-		}
-		env++;
+		add_env(lstenv, env_new(*env_tmp));
+		env_tmp++;
 	}
 	while ((*lstenv)->prev)
 		(*lstenv) = (*lstenv)->prev;
+	return ;
+}
+
+int		ft_env(char **argv, t_env **lstenv)
+{
+	t_env	*tmp;
+
+	tmp = *lstenv;
+	while (tmp)
+	{
+		ft_printf("%s=%s\n", tmp->key, tmp->val);
+		tmp = tmp->next;
+	}
 	return (0);
 }
