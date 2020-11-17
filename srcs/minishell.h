@@ -68,7 +68,7 @@ void	arg_clear(t_arg **arg);
 **	execute_arg.c
 */
 int		get_errno();
-int		execute_shell(t_exe *exe, t_env **lstenv);
+int		execute_shell(t_exe *exe, t_env **lstenv, int *ret);
 
 
 /*
@@ -100,11 +100,12 @@ int		ft_pwd(char **argv, t_env **lstenv);
 **	builtin_export.c -------------------------------------------------------------
 */
 int		ft_export(char **argv, t_env **lstenv);
+int		add_val(char *str, t_env **lstenv);
 /*
 **	builtin_exit.c ------------------------------------------------------------
 */
 ssize_t	ft_atoi_ssizet(char *str, int *flag);
-int		ft_exit(char *8argv, t_env **lstenv);
+int		ft_exit(char **argv, t_env **lstenv);
 
 
 #endif

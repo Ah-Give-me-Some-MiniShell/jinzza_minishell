@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 13:21:17 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 13:45:17 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/17 15:37:45 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int		main(int argc, char **argv, char **env)
 	t_arg	*arg;
 	t_exe	*exe;
 	int		size;
+	int		ret;
 
 	// signal(2, sigint_handler);
 
@@ -34,13 +35,12 @@ int		main(int argc, char **argv, char **env)
 		while (arg)
 		{
 			exe = build_exe_tree(&arg, size);
-			if (exe)
-			{
-				while (exe->prev)
-					exe = exe->prev;
-				execute_shell(exe, &lstenv);
-				exe_clear(&exe);
-			}
+			while (exe && exe->prev)
+				exe = exe->prev;
+			if (exe && exe->argv && *exe->argv && **exe->argv)
+				execute_shell(exe, &lstenv, &ret);
+			// add_val(ft_strjoin_free(ft_strdup("?"), ft_itoa(ret)), &lstenv);
+			exe_clear(&exe);
 			if (!(arg->next))
 				break;
 			arg = arg->next;

@@ -6,12 +6,38 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 16:19:10 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 00:19:31 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/17 15:51:09 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "minishell_flag.h"
+
+// t_str	*extract_env(char **str, int *flag, t_env *lstenv)
+// {
+// 	char	*start;
+// 	char	*key;
+// 	t_str	*result;
+
+// 	start = ++(*str);
+// 	while (**str && (ft_isalnum(**str) || **str == '_'))
+// 		(*str)++;
+// 	key = ft_substr(start, 0, *str - start);
+// 	while (lstenv)
+// 	{
+// 		if (ft_strcmp(key, lstenv->key))
+// 		{
+// 			lstenv = lstenv->next;
+// 			continue ;
+// 		}
+// 		result = ft_str_new(lstenv->val);
+// 		break ;
+// 	}
+// 	free(key);
+// 	*flag ^= ENV;
+// 	(*str)--;
+// 	return (result);
+// }
 
 t_str	*extract_env(char **str, int *flag, t_env *lstenv)
 {
@@ -23,16 +49,13 @@ t_str	*extract_env(char **str, int *flag, t_env *lstenv)
 	while (**str && (ft_isalnum(**str) || **str == '_'))
 		(*str)++;
 	key = ft_substr(start, 0, *str - start);
-	while (lstenv)
-	{
-		if (ft_strcmp(key, lstenv->key))
-		{
-			lstenv = lstenv->next;
-			continue ;
-		}
+	printf("[%s]\n", key);
+	while (lstenv && ft_strcmp(key, lstenv->key))
+		lstenv = lstenv->next;
+	if (lstenv)
 		result = ft_str_new(lstenv->val);
-		break ;
-	}
+	else
+		result = ft_str_new("");
 	free(key);
 	*flag ^= ENV;
 	(*str)--;

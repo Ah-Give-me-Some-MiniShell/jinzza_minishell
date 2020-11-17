@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 20:37:56 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 11:59:26 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/17 15:05:27 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ int		ft_env(char **argv, t_env **lstenv)
 	tmp = *lstenv;
 	while (tmp)
 	{
+		if (ft_strcmp(tmp->key, "?") == 0)
+			continue ;
 		ft_printf("%s=%s\n", tmp->key, tmp->val);
 		tmp = tmp->next;
 	}

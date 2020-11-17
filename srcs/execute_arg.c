@@ -1,5 +1,5 @@
 #include "minishell.h"
-#define DEBUG
+// #define DEBUG
 
 
 int	get_errno()
@@ -11,6 +11,8 @@ int	get_errno()
 
 void	*is_builtin(char *path)
 {
+	if (!path)
+		return (0);
 	if (ft_strcmp(path, "echo") == 0)
 		return (ft_echo);
 	else if (ft_strcmp(path, "env") == 0)
@@ -21,10 +23,11 @@ void	*is_builtin(char *path)
 		return (ft_pwd);
 	else if (ft_strcmp(path, "cd") == 0)
 		return (ft_cd);
+	else if (ft_strcmp(path, "exit") == 0)
+		return (ft_exit);
 	else
 		return (0);
 }
-
 
 int		path_finder(char **file, t_env **lstenv)
 {
@@ -108,13 +111,12 @@ int		ft_strsignal_pt2(int status)
 	return (0);
 }
 
-int		execute_shell(t_exe *exe, t_env **lstenv)
+int		execute_shell(t_exe *exe, t_env **lstenv, int *ret)
 {
-	int		(*ft_builtin)();
+	int		(*builtin)();
 
-	if ((ft_builtin = is_builtin(exe->argv[0])) \
-	&& (ft_builtin == ft_cd || ft_builtin == ft_export))
-		return (ft_builtin(exe->argv, lstenv));
+	if ((builtin = is_builtin(exe->argv[0])) && (builtin != ft_echo))
+		return (builtin(exe->argv, lstenv));
 	#ifdef DEBUG
 	printf("process: %s\n", exe->argv[0]);
 	#endif
@@ -125,8 +127,8 @@ int		execute_shell(t_exe *exe, t_env **lstenv)
 			dup2(exe->fd[0], 0);
 		if (exe->fd[1] != 1)
 			dup2(exe->fd[1], 1);
-		if ((ft_builtin = is_builtin(exe->argv[0])))
-			exit(ft_builtin(exe->argv, lstenv));
+		if ((builtin = is_builtin(exe->argv[0])))
+			exit(builtin(exe->argv, lstenv));
 		path_finder(&exe->argv[0], lstenv);
 		exe->ret = execve(exe->argv[0], exe->argv, env_to_arr(*lstenv));
 		ft_printf("%s\n", strerror(get_errno()));
@@ -135,11 +137,14 @@ int		execute_shell(t_exe *exe, t_env **lstenv)
 	else
 	{
 		if (exe->next)
-			execute_shell(exe->next, lstenv);
+			execute_shell(exe->next, lstenv, ret);
 		waitpid(exe->pid, &exe->status, 0);
 		if (!exe->next)
+		{
 			exe->status > 14 ? \
 			ft_strsignal_pt1(exe->status) : ft_strsignal_pt1(exe->status);
+			*ret = WEXITSTATUS(exe->status);
+		}
 		if (exe->prev)
 			kill(exe->prev->pid, SIGKILL);
 		if (exe->fd[0] != 0)

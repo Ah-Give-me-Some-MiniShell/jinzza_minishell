@@ -6,25 +6,24 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 13:54:24 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/16 18:10:51 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/17 14:32:23 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#define FLAG_OVERFLOW	1
+#define FLAG_INVALID_CHAR	2
 
 /*
 ** long long max = 9223372036854775807
 */
-#define FLAG_OVERFLOW	1
-#define FLAG_INVALID_CHAR	2
 
 ssize_t	ft_atoi_ssizet(char *str, int *flag)
 {
 	size_t	n;
 	int		sign;
-
-	*flag = 0;
-	if (!*str)
+	
+	if (!str || !*str)
 		return (0);
 	n = 0;
 	sign = 1;
@@ -40,10 +39,7 @@ ssize_t	ft_atoi_ssizet(char *str, int *flag)
 	while ('0' <= *str && *str <= '9')
 	{
 		if (n >= 922337203685477580 && *str > '7')
-		{
-			printf("[%zu]\n", n);
 			*flag |= FLAG_OVERFLOW;
-		}
 		n *= 10;
 		n += *str++ - '0';
 	}
@@ -52,11 +48,18 @@ ssize_t	ft_atoi_ssizet(char *str, int *flag)
 }
 
 
-int		ft_exit(char **argv, t_env *lstenv)
+int		ft_exit(char **argv, t_env **lstenv)
 {
 	unsigned long long	n;
+	int					flag;
 
-	if (argv || argv[0])
-		n = ft_atoi(argv[0]);
-	exit(0);
+	flag = 0;
+	(void)lstenv;
+	if (argv[1])
+		n = ft_atoi_ssizet(argv[1], &flag);
+	else
+		n = 0;
+	if (flag)
+		ft_printf("exit: numeric argument required\n");
+	exit(n);
 }
