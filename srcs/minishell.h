@@ -36,9 +36,21 @@ typedef struct		s_env
 	char			*key;
 	char			*val;
 }					t_env;
+
+
+
+
 void	handler(int signo);
 int		return_value(int option, int set_num);
 int		print_env();
+
+/*
+**	===========================================================================
+**	extract_word.c
+*/
+void	manage_pipe(t_exe *exe, int	size);
+
+
 /*
 **	===========================================================================
 **	extract_word.c

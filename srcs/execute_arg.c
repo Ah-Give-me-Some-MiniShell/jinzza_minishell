@@ -141,20 +141,20 @@ int		execute_shell(t_exe *exe, t_env **lstenv)
 	{
 		if (exe->next)
 			execute_shell(exe->next, lstenv);
-		waitpid(exe->pid, &exe->status, 0);
-		if (!exe->next)
-		{
-			exe->status > 14 ? \
-			ft_strsignal_pt1(exe->status) : ft_strsignal_pt1(exe->status);
-			return_value(1, exe->status);
-		}
-		if (exe->prev)
-			kill(exe->prev->pid, SIGKILL);
-		if (exe->fd[0] != 0)
-			close(exe->fd[0]);
-		if (exe->fd[1] != 1)
-			close(exe->fd[1]);
-		return (WEXITSTATUS(exe->status));
+		// waitpid(exe->pid, &exe->status, 0);
+		// if (!exe->next)
+		// {
+		// 	exe->status > 14 ? \
+		// 	ft_strsignal_pt1(exe->status) : ft_strsignal_pt1(exe->status);
+		// 	return_value(1, exe->status);
+		// }
+		// if (exe->prev)
+		// 	kill(exe->prev->pid, SIGKILL);
+		// if (exe->fd[0] != 0)
+		// 	close(exe->fd[0]);
+		// if (exe->fd[1] != 1)
+		// 	close(exe->fd[1]);
+		// return (WEXITSTATUS(exe->status));
 	}
 	return (0);
 }

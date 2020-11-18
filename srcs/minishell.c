@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 13:21:17 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 23:51:24 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/18 19:51:49 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ void	minishell(t_env **lstenv)
 		while (exe && exe->prev)
 			exe = exe->prev;
 		if (exe && exe->argv && *exe->argv && **exe->argv)
+		{
 			execute_shell(exe, lstenv);
+			manage_pipe(exe, size);
+		}
 		exe_clear(&exe);
 		if (!(arg->next))
 			break;
@@ -87,12 +90,13 @@ int		main(int argc, char **argv, char **env)
 {
 	t_env	*lstenv;
 
-	signal(SIGINT, handler_signal);
-	signal(SIGQUIT, handler_signal);
+	// signal(SIGINT, handler_signal);
+	// signal(SIGQUIT, handler_signal);
 	env_init(&lstenv, env);
 	while (42)
 	{
 		minishell(&lstenv);
+		printf("ahahahahahah\n");
 	}
 
 }
