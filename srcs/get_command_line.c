@@ -6,11 +6,12 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/12 11:29:22 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 00:10:57 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/17 23:45:41 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "color.h"
 #include "minishell_flag.h"
 
 
@@ -57,6 +58,10 @@ t_arg	*arg_new(t_arg *curr, t_str *str, int type)
 	return (result);
 }
 
+#define GCL_FLAG
+#define GCL_TYPE
+#define GCL_FLAG
+
 t_arg	*get_command_line(t_env *lstenv)
 {
 	char	*cmdline;
@@ -69,7 +74,11 @@ t_arg	*get_command_line(t_env *lstenv)
 	flag = 0;
 	while (1)
 	{
-		get_next_line(0, &cmdline);
+		if (get_next_line(0, &cmdline) == 0)
+		{
+			ft_putstr_fd(I_GREEN"Bye Bye\n"WHITE, 1);
+			exit(0);
+		}
 		cmdline_head = cmdline;
 		arg->str = ft_str_join_free(arg->str, 
 			extract_word(&cmdline, &flag, lstenv, &type));
@@ -79,7 +88,7 @@ t_arg	*get_command_line(t_env *lstenv)
 		free(cmdline_head);
 		if (!(flag &(S_QUOTE | D_QUOTE | ESCAPE)))
 			break ;
-		ft_putstr_fd("> ", 1);
+		ft_putstr_fd(I_GREEN"> "WHITE, 1);
 	}
 	return arg;
 }

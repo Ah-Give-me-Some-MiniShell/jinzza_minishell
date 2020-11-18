@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 19:49:22 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 13:02:43 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/18 00:00:47 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ int		ft_cd(char **argv, t_env **lstenv)
 			free(tmp->val);
 			tmp->val = ft_strdup(getcwd(buffer, 1000));
 		}
+		tmp = tmp->next;
 	}
-	ret = chdir(argv[1]);
+	if ((ret = chdir(argv[1])) < 0)
+		print_err();
 	tmp = *lstenv;
 	while (tmp)
 	{
@@ -37,6 +39,7 @@ int		ft_cd(char **argv, t_env **lstenv)
 			free(tmp->val);
 			tmp->val = ft_strdup(getcwd(buffer, 1000));
 		}
+		tmp = tmp->next;
 	}
 	return (0);
 }

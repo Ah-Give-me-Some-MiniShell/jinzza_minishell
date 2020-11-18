@@ -36,7 +36,8 @@ typedef struct		s_env
 	char			*key;
 	char			*val;
 }					t_env;
-
+void	handler(int signo);
+int		return_value(int option, int set_num);
 int		print_env();
 /*
 **	===========================================================================
@@ -62,13 +63,14 @@ t_exe	*build_exe_tree(t_arg **arg, int arg_size);
 void	exe_clear(t_exe **exe);
 int		arg_rewind(t_arg **arg);
 void	arg_clear(t_arg **arg);
+void	print_err();
 
 /*
 **	===========================================================================
 **	execute_arg.c
 */
 int		get_errno();
-int		execute_shell(t_exe *exe, t_env **lstenv, int *ret);
+int		execute_shell(t_exe *exe, t_env **lstenv);
 
 
 /*

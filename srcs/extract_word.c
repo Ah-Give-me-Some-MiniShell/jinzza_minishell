@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 16:19:10 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 15:51:09 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/17 17:49:52 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,22 @@ t_str	*extract_env(char **str, int *flag, t_env *lstenv)
 	while (**str && (ft_isalnum(**str) || **str == '_'))
 		(*str)++;
 	key = ft_substr(start, 0, *str - start);
-	printf("[%s]\n", key);
-	while (lstenv && ft_strcmp(key, lstenv->key))
-		lstenv = lstenv->next;
-	if (lstenv)
-		result = ft_str_new(lstenv->val);
+	if (!*key && **str == '?')
+	{
+		(*str)++;
+		start = ft_itoa(return_value(0,0));
+		result = ft_str_new(start);
+		free(start);
+	}
 	else
-		result = ft_str_new("");
+	{
+		while (lstenv && ft_strcmp(key, lstenv->key))
+			lstenv = lstenv->next;
+		if (lstenv)
+			result = ft_str_new(lstenv->val);
+		else
+			result = ft_str_new("");
+	}
 	free(key);
 	*flag ^= ENV;
 	(*str)--;

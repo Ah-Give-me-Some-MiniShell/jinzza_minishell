@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 19:24:50 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 12:01:11 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/17 17:49:02 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ int		ft_echo(char **argv, t_env **lstenv)
 	(void)lstenv;
 	newline = 0;
 	argv++;
-	if (ft_strcmp(*argv, "-n") == 0)
+	if (*argv && ft_strcmp(*argv, "-n") == 0)
+	{
 		newline = 1;
+		argv++;
+	}
 	while (*argv)
 	{
 		ft_putstr_fd(*argv, 1);
