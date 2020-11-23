@@ -8,6 +8,8 @@
 # include <signal.h>
 # include <unistd.h>
 # define BUILTIN	"echo cd pwd export unset env exit"
+# define MINISHELL_OK	0
+# define MINISHELL_ERR	1
 
 typedef struct		s_arg
 {
@@ -23,7 +25,7 @@ typedef struct		s_exe
 	struct s_exe	*next;
 	char			**argv;
 	int				fd[2];
-	int				errno;
+	int				pipe_fd[2];
 	int				ret;
 	int				status;
 	pid_t			pid;
@@ -37,8 +39,11 @@ typedef struct		s_env
 	char			*val;
 }					t_env;
 
-
-
+/*
+**	===========================================================================
+**	minishell.c
+*/
+void	print_prompt(int option);
 
 void	handler(int signo);
 int		return_value(int option, int set_num);
@@ -46,9 +51,19 @@ int		print_env();
 
 /*
 **	===========================================================================
-**	extract_word.c
+**	error_handler.c
 */
-void	manage_pipe(t_exe *exe, int	size);
+void	print_err();
+int		ft_strsignal_pt1(int status);
+int		ft_strsignal_pt2(int status);
+void	handler_signal(int signo);
+
+
+/*
+**	===========================================================================
+**	process_terminater.c
+*/
+void	process_terminater(t_exe *exe, int	size);
 
 
 /*
@@ -75,15 +90,13 @@ t_exe	*build_exe_tree(t_arg **arg, int arg_size);
 void	exe_clear(t_exe **exe);
 int		arg_rewind(t_arg **arg);
 void	arg_clear(t_arg **arg);
-void	print_err();
+
 
 /*
 **	===========================================================================
 **	execute_arg.c
 */
-int		get_errno();
 int		execute_shell(t_exe *exe, t_env **lstenv);
-
 
 /*
 **	===========================================================================
@@ -111,10 +124,14 @@ int		ft_cd(char **argv, t_env **lstenv);
 */
 int		ft_pwd(char **argv, t_env **lstenv);
 /*
-**	builtin_export.c -------------------------------------------------------------
+**	builtin_export.c ----------------------------------------------------------
 */
 int		ft_export(char **argv, t_env **lstenv);
 int		add_val(char *str, t_env **lstenv);
+/*
+**	builtin_unset.c -----------------------------------------------------------
+*/
+int		ft_unset(char **argv, t_env **lstenv);
 /*
 **	builtin_exit.c ------------------------------------------------------------
 */

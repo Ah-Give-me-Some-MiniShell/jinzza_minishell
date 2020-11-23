@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+         #
+#    By: minckim <minckim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 16:34:45 by yujo              #+#    #+#              #
-#    Updated: 2020/11/18 19:25:39 by minckim          ###   ########.fr        #
+#    Updated: 2020/11/20 19:20:40 by minckim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,15 +28,15 @@ FILE_SRCS = \
 	get_command_line\
 	build_exe_tree\
 	execute_arg\
-	manage_pipe\
+	process_terminater\
 	builtin_env\
 	builtin_cd\
 	builtin_pwd\
 	builtin_echo\
 	builtin_export\
-	builtin_exit
-
-	# execute_arg\
+	builtin_unset\
+	builtin_exit\
+	error_handler
 
 # -----------------------------------------------------------------------------
 # Basic settings

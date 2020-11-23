@@ -3,14 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: minckim <minckim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 00:19:51 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 13:08:52 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/20 22:32:37 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		replace_val(t_env *tmp, t_env *node)
+{
+	if (ft_strcmp(tmp->key, node->key) == 0)
+	{
+		free(tmp->val);
+		tmp->val = node->val;
+		free(node->key);
+		free(node);
+		return (1);
+	}
+	if (!(tmp->next))
+	{
+		tmp->next = node;
+		node->prev = tmp;
+		return (1);
+	}
+	return (0);
+}
 
 int		add_val(char *str, t_env **lstenv)
 {
@@ -27,43 +46,18 @@ int		add_val(char *str, t_env **lstenv)
 	tmp = *lstenv;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->key, node->key) == 0)
-		{
-			free(tmp->val);
-			tmp->val = node->val;
-			free(node->key);
-			free(node);
+		if (replace_val(tmp, node))
 			break ;
-		}
-		if (!(tmp->next))
-		{
-			tmp->next = node;
-			node->prev = tmp;
-			break ;
-		}
 		tmp = tmp->next;
 	}
 	return 0;
 }
 
-t_env	**sort_env(t_env *lstenv)
+void	sort_arr(t_env **array, t_env *lstenv, int size)
 {
-	t_env	*head;
-	t_env	**array;
-	int		size;
 	int		i;
 	int		j;
 
-	size = 0;
-	head = lstenv;
-	while (lstenv)
-	{
-		size++;
-		lstenv = lstenv->next;
-	}
-	lstenv = head;
-	if (!(array = malloc(sizeof(t_env*) * (size + 1))))
-		return (0);
 	i = 0;
 	while (lstenv)
 	{
@@ -86,9 +80,27 @@ t_env	**sort_env(t_env *lstenv)
 			}
 		}
 	}
-	return (array);
 }
 
+t_env	**sort_env(t_env *lstenv)
+{
+	t_env	*head;
+	t_env	**array;
+	int		size;
+
+	size = 0;
+	head = lstenv;
+	while (lstenv)
+	{
+		size++;
+		lstenv = lstenv->next;
+	}
+	lstenv = head;
+	if (!(array = malloc(sizeof(t_env*) * (size + 1))))
+		return (0);
+	sort_arr(array, lstenv, size);
+	return (array);
+}
 
 int		ft_export(char **argv, t_env **lstenv)
 {
@@ -111,7 +123,4 @@ int		ft_export(char **argv, t_env **lstenv)
 	}
 	add_val(argv[1], lstenv);
 	return 0;
-	// if (!(node = malloc(sizeof(t_env))))
-	// 	return (-1);
-
 }

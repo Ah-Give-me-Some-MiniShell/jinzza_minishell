@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: minckim <minckim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 20:37:56 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 16:53:49 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/21 19:07:39 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,19 @@ char	**env_to_arr(t_env *env)
 	}
 	*arr = 0;
 	return (arr_head);
+}
+
+char 	*find_idx(char *str)
+{
+	if ('0' <= *str && *str <= '9')
+		return (0);
+	while (*str && *str != '=')
+	{
+		if (!(ft_isalnum(*str) || *str == '_'))
+			return (0);
+		str++;
+	}
+	return str;
 }
 
 t_env	*env_new(char *str)
