@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 20:37:56 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/21 19:07:39 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/23 12:58:40 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char 	*find_idx(char *str)
 			return (0);
 		str++;
 	}
-	return str;
+	return (str);
 }
 
 t_env	*env_new(char *str)
