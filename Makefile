@@ -6,7 +6,7 @@
 #    By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 16:34:45 by yujo              #+#    #+#              #
-#    Updated: 2020/11/26 17:39:21 by minckim          ###   ########.fr        #
+#    Updated: 2020/11/26 21:03:46 by minckim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -143,7 +143,7 @@ fclean : clean
 	@echo $(YELLOW)"Removing minishell..."$(WHITE)
 	@$(RM) $(NAME)
 
-test: $(TESTCASE_EXE) ./
+test: $(TESTCASE_EXE)
 
 leaks:
 	@while true; do leaks minishell; sleep 1; done;
