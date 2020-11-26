@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 16:53:57 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/26 04:09:07 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 19:49:17 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,5 @@ int		ft_unset(char **argv, t_env **lstenv)
 			return (del_val(tmp, lstenv));
 		tmp = tmp->next;
 	}
-	return 0;
+	return (0);
 }

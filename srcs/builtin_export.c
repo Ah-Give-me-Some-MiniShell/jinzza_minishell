@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 00:19:51 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/24 15:57:40 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 19:55:07 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,14 @@ int		add_val(char *str, t_env **lstenv)
 			break ;
 		tmp = tmp->next;
 	}
-	return 0;
+	return (0);
 }
 
 void	sort_arr(t_env **array, t_env *lstenv, int size)
 {
 	int		i;
 	int		j;
+	t_env	*tmp;
 
 	i = 0;
 	while (lstenv)
@@ -73,7 +74,6 @@ void	sort_arr(t_env **array, t_env *lstenv, int size)
 		{
 			if (ft_strcmp(array[i]->key, array[j]->key) > 0)
 			{
-				t_env	*tmp;
 				tmp = array[i];
 				array[i] = array[j];
 				array[j] = tmp;
@@ -120,5 +120,5 @@ int		ft_export(char **argv, t_env **lstenv)
 		return (0);
 	}
 	add_val(argv[1], lstenv);
-	return 0;
+	return (0);
 }

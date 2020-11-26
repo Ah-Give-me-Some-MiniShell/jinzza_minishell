@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 20:37:56 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/26 04:12:40 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 19:52:23 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	**env_to_arr(t_env *env)
 	return (arr_head);
 }
 
-char 	*find_idx(char *str)
+char	*find_idx(char *str)
 {
 	if ('0' <= *str && *str <= '9')
 		return (0);
@@ -76,7 +76,6 @@ t_env	*env_new(char *str)
 	}
 	return (env);
 }
-
 
 void	env_init(t_env **lstenv, char **env)
 {

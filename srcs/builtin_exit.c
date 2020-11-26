@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 13:54:24 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/26 13:46:52 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 19:48:38 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ ssize_t	ft_atoi_ssizet(char *str, int *flag)
 {
 	size_t	n;
 	int		sign;
-	
+
 	if (!str || !*str)
 		return (0);
 	n = 0;
@@ -43,7 +43,6 @@ ssize_t	ft_atoi_ssizet(char *str, int *flag)
 	*flag |= *str == 0 ? 0 : FLAG_INVALID_CHAR;
 	return (n * sign);
 }
-
 
 int		ft_exit(char **argv, t_env **lstenv)
 {

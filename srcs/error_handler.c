@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 17:56:55 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/26 16:18:33 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 19:57:05 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@
 void	print_err(char *str)
 {
 	extern int	errno;
-	
+
 	ft_printf(I_RED"%s: %s\n"WHITE, str, strerror(errno));
 }
-
 
 int		ft_strsignal_pt1(int status)
 {

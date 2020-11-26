@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 18:04:56 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/26 17:52:57 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 19:59:10 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	execute_task(t_task *task, t_env **lstenv)
 		return ;
 	}
 	task->pid = fork();
-	if(task->pid == 0)
+	if (task->pid == 0)
 		execute_child_process(task, lstenv, builtin);
 	else
 	{

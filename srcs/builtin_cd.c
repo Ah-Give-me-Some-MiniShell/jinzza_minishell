@@ -6,12 +6,11 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 19:49:22 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/26 15:59:53 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 19:45:23 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int		ft_cd(char **argv, t_env **lstenv)
 {
