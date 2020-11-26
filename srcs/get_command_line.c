@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/12 11:29:22 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/26 03:50:29 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 20:06:18 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 #include "color.h"
 #include "minishell_flag.h"
 
-
-int	check_syntax(t_arg **arg)
+int		check_syntax(t_arg **arg)
 {
 	t_arg	*head;
 	int		check;
@@ -55,7 +54,7 @@ t_arg	*arg_new(t_arg *curr, t_str *str, int type)
 	return (result);
 }
 
-void	say_goodbye()
+void	say_goodbye(void)
 {
 	ft_putstr_fd(I_GREEN"Bye Bye\n"WHITE, 1);
 	exit(0);
@@ -76,15 +75,15 @@ t_arg	*get_command_line(t_env *lstenv)
 		if (get_next_line(0, &cmdline) == 0)
 			say_goodbye();
 		cmdline_head = cmdline;
-		arg->str = ft_str_join_free(arg->str, 
+		arg->str = ft_str_join_free(arg->str, \
 			extract_word(&cmdline, &flag, lstenv, &type));
 		while (*cmdline)
-			arg = arg_new(arg, 
+			arg = arg_new(arg, \
 			extract_word(&cmdline, &flag, lstenv, &type), type);
 		free(cmdline_head);
-		if (!(flag &(S_QUOTE | D_QUOTE | ESCAPE)))
+		if (!(flag & (S_QUOTE | D_QUOTE | ESCAPE)))
 			break ;
 		ft_putstr_fd(I_GREEN"> "WHITE, 1);
 	}
-	return arg;
+	return (arg);
 }

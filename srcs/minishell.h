@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/26 20:02:02 by minckim           #+#    #+#             */
+/*   Updated: 2020/11/26 20:03:52 by minckim          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "../libft/libft.h"
@@ -74,7 +86,8 @@ int					path_finder(char **file, t_env **lstenv);
 /*
 **	redirection_manage.c ------------------------------------------------------
 */
-int					redirection_manage(t_task **task, t_arg **arg, int arg_size);
+int					redirection_manage\
+									(t_task **task, t_arg **arg, int arg_size);
 /*
 **	execute_task.c ------------------------------------------------------------
 */

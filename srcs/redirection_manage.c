@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 02:43:13 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/26 17:56:40 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 20:12:26 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int		fd_redirection_pipe(t_arg **arg, t_task **task, int arg_size)
 int		redirection_manage(t_task **task, t_arg **arg, int arg_size)
 {
 	int		ret;
-	
+
 	ret = MINISHELL_OK;
 	if ((*arg)->type == RE_IN)
 		ret = fd_redirection_in(arg, task);

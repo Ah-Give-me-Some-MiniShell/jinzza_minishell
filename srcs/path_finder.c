@@ -6,17 +6,17 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 02:49:37 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/26 02:51:37 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 20:08:32 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	read_directory(char **file, char **path_vec)
+int		read_directory(char **file, char **path_vec)
 {
 	DIR				*dir;
 	struct dirent	*dp;
-	
+
 	while (*path_vec)
 	{
 		if (!(dir = opendir(*path_vec)))

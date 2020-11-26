@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 20:05:19 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/03 19:53:55 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 20:30:54 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_str	*ft_str_append(t_str *dest, char c)
 	char	*result;
 	char	*result_tmp;
 	char	*dest_tmp;
-	
+
 	if (!dest)
 		if (!(dest = ft_str_new("")))
 			return (0);

@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/06 17:59:50 by minckim           #+#    #+#             */
-/*   Updated: 2020/10/29 11:24:12 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 20:17:14 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ size_t	ft_strlen(const char *s)
 	if (!s)
 		return (0);
 	e = s;
-	while (*e++);
+	while (*e++)
+	{
+	}
 	return (e - s - 1);
 }
-

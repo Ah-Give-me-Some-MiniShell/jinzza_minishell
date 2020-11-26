@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 13:21:17 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/26 17:59:44 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 20:11:54 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	print_prompt(int option)
 {
 	if (option)
 		ft_putstr_fd("  \n", 1);
-	ft_putstr_fd(I_CYAN"드디어 끝났다!! "B_GREEN">> "WHITE, 1);
+	ft_putstr_fd(I_CYAN"ByeByeMinishell "B_GREEN">> "WHITE, 1);
 }
 
 void	minishell(t_env **lstenv)
@@ -64,7 +64,7 @@ void	minishell(t_env **lstenv)
 		}
 		task_clear(&task);
 		if (!(arg->next))
-			break;
+			break ;
 		arg = arg->next;
 	}
 	arg_clear(&arg);

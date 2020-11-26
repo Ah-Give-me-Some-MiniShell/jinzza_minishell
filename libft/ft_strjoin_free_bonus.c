@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 22:01:12 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/03 20:23:29 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 20:25:28 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ char	*ft_strjoin_free(char *str0, char *str1)
 
 	size = ft_strlen(str0);
 	size += ft_strlen(str1);
-	if (!(result_tmp = (result = malloc(sizeof(char) * size))))
+	if (!(result = malloc(sizeof(char) * size)))
 		return (0);
+	result_tmp = result;
 	str_tmp = str0;
 	while (*str0)
 		*result++ = *str0++;

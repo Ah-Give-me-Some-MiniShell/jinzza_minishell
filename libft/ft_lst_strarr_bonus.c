@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/05 00:09:25 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/05 17:58:55 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 20:32:52 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,5 @@ char	**ft_lst_strarr(t_list *lst)
 		free(tmp);
 	}
 	*result = 0;
-	return result_tmp;
+	return (result_tmp);
 }

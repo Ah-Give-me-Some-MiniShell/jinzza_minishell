@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/07 19:50:23 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/05 10:27:32 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 20:14:27 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <stddef.h>
 # include "get_next_line/get_next_line.h"
 # include "ft_printf/ft_printf.h"
+
 /*
 **	===========================================================================
 **	libft mandatory and bonus functions
@@ -94,7 +95,6 @@ void				ft_clear_array(char **arr);
 t_str				*ft_str_new(char *str);
 t_str				*ft_str_join_free(t_str *str0, t_str *str1);
 void				ft_str_del(void *str);
-// void				ft_str_del(t_str *str);
 t_str				*ft_str_append(t_str *dest, char c);
 char				**ft_lst_strarr(t_list *lst);
 

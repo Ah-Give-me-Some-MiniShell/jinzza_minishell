@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 16:19:10 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/26 14:30:41 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 20:11:33 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_str	*extract_env(char **str, int *flag, t_env *lstenv)
 t_str	*extract_redirection(char **str, int *flag, int *type)
 {
 	t_str	*word;
-	
+
 	word = ft_str_new("");
 	if (*flag & RE_IN)
 		word = ft_str_join_free(word, ft_str_new("<"));
@@ -88,7 +88,7 @@ t_str	*extract_word(char **str, int *flag, t_env *lstenv, int *type)
 {
 	int		c;
 	t_str	*word;
-	
+
 	if (*flag & (RE_IN | RE_OUT | RE_APP | RE_PIPE | ENDLINE))
 		return (extract_redirection(str, flag, type));
 	word = ft_str_new("");

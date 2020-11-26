@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 19:03:34 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/03 19:53:45 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 20:29:27 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@ static t_str	*handle(t_str *str0, t_str *str1, \
 	return (result);
 }
 
-t_str	*ft_str_join_free(t_str *str0, t_str *str1)
+t_str			*ft_str_join_free(t_str *str0, t_str *str1)
 {
 	t_str	*result;
 	char	*tmp_result;
 	char	*tmp_src;
+
 	if (!str0)
 		return (str1);
 	if (!str1)
