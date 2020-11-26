@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minckim <minckim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 17:56:55 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/20 18:00:14 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 16:18:33 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 #include "color.h"
 #include "minishell_flag.h"
 
-void	print_err()
+void	print_err(char *str)
 {
 	extern int	errno;
 	
-	ft_printf(I_RED"%s\n"WHITE, strerror(errno));
+	ft_printf(I_RED"%s: %s\n"WHITE, str, strerror(errno));
 }
 
 
@@ -63,15 +63,15 @@ int		ft_strsignal_pt2(int status)
 
 void	handler_signal(int signo)
 {
-	return_value(1, signo);
 	if (signo == SIGINT)
 	{
+		return_value(1, signo);
 		ft_putstr_fd("\b\b", 1);
 		print_prompt(1);
 	}
 	else if (signo == SIGQUIT)
 	{
-		ft_putstr_fd("\b\b  ", 1);
+		ft_putstr_fd("\b\b  \b\b", 1);
 	}
 	return ;
 }

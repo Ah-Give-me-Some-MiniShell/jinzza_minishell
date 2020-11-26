@@ -75,11 +75,9 @@ clean :
 	@$(RM) *.o
 	@$(RM) $(GNL_DIR)*.o
 	@$(RM) $(PRINTF_DIR)*.o
-	@echo $(YELLOW)"- Done"$(WHITE)
 
 fclean : clean
 	@echo $(YELLOW)"Removing libft.a..."$(WHITE)
 	@$(RM) $(NAME)
-	@echo $(YELLOW)"- Done"$(WHITE)
 
 .PHONY: all bonus clean fclean re

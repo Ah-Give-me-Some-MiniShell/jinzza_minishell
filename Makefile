@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: minckim <minckim@student.42.fr>            +#+  +:+       +#+         #
+#    By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 16:34:45 by yujo              #+#    #+#              #
-#    Updated: 2020/11/20 19:20:40 by minckim          ###   ########.fr        #
+#    Updated: 2020/11/26 17:39:21 by minckim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,20 +14,22 @@ NAME = minishell
 
 CC = gcc
 
-# FLAG = -Wall -Wextra -Werror -g
+FLAG = -Wall -Wextra -Werror -g
 
-FLAG = -g
+# FLAG = -g
 
 # -----------------------------------------------------------------------------
 # File names
 # -----------------------------------------------------------------------------
 FILE_SRCS = \
 	minishell\
+	redirection_manage\
+	path_finder\
 	check_flag\
 	extract_word\
 	get_command_line\
-	build_exe_tree\
-	execute_arg\
+	build_task_tree\
+	execute_task\
 	process_terminater\
 	builtin_env\
 	builtin_cd\
@@ -38,21 +40,23 @@ FILE_SRCS = \
 	builtin_exit\
 	error_handler
 
+FILE_TESTCASE_SRCS = \
+	print_eternally\
+	read_nbyte_n_write\
+	segmentation_fault\
+	loop
+
 # -----------------------------------------------------------------------------
 # Basic settings
 # -----------------------------------------------------------------------------
-DIR_COMMON = ./common/
-DIR_PARSER = ./parser/
-DIR_EXECUTE = ./execute/
 DIR_SRCS = ./srcs/
-DIR_MINCKIM = ./minckim/
-DIR_YUJO = ./yujo/
+DIR_TESTCASE_SRCS = ./test_case/
 
-SRCS = \
-	$(addprefix $(DIR_SRCS), $(addsuffix .c, $(FILE_SRCS)))
+SRCS = $(addprefix $(DIR_SRCS), $(addsuffix .c, $(FILE_SRCS)))
+OBJS = $(addprefix $(DIR_SRCS), $(addsuffix .o, $(FILE_SRCS)))
 
-OBJS = \
-	$(addprefix $(DIR_SRCS), $(addsuffix .o, $(FILE_SRCS)))
+TESTCASE_SRCS = $(addprefix $(DIR_TESTCASE_SRCS), $(addsuffix .c, $(FILE_TESTCASE_SRCS)))
+TESTCASE_EXE = $(FILE_TESTCASE_SRCS)
 
 LIBFT_DIR = ./libft/
 LIBFT = libft.a
@@ -110,14 +114,17 @@ print_title :
 $(LIBFT) :
 	@make -C $(LIBFT_DIR)
 
-# $(NAME) : print_title $(LIBFT) $(OBJS)
+# $(NAME) : $(LIBFT) $(OBJS)
 
-$(NAME) : $(LIBFT) $(OBJS)
+$(NAME) : print_title $(LIBFT) $(OBJS)
 	@$(CC) $(FLAG) -o $(NAME) $(OBJS) -lft -L$(LIBFT_DIR)
 	@echo $(GREEN)"- Done"$(WHITE)
 
 run : $(NAME)
 	@./$(NAME)
+
+$(TESTCASE_EXE) : $(TESTCASE_SRCS)
+	gcc $(addprefix $(DIR_TESTCASE_SRCS), $@.c) -o $@
 
 %.o : %.c
 	$(CC) $(FLAG) -c $*.c -o $@
@@ -127,15 +134,20 @@ re : fclean $(NAME)
 clean :
 	@echo $(YELLOW)"Removing minishell object files..."$(WHITE)
 	@$(RM) $(OBJS)
-	@echo $(YELLOW)"- Done"$(WHITE)
+	@$(RM) $(TESTCASE_EXE)
 	@make clean -C $(LIBFT_DIR)
 
 fclean : clean
-	@make fclean -C $(LIBFT_DIR)
+	@echo $(YELLOW)"Removing libft.a..."$(WHITE)
 	@$(RM) $(LIBFT_DIR)libft.a
-	@echo $(YELLOW)"Removing minishell object files..."$(WHITE)
+	@echo $(YELLOW)"Removing minishell..."$(WHITE)
 	@$(RM) $(NAME)
-	@echo $(YELLOW)"- Done"$(WHITE)
+
+test: $(TESTCASE_EXE) ./
 
 leaks:
 	@while true; do leaks minishell; sleep 1; done;
+
+norm:
+	norminette $(DIR_SRCS)*.c $(DIR_SRCS)*.h
+	norminette $(LIBFT_DIR)*.c

@@ -7,9 +7,10 @@
 # include <dirent.h>
 # include <signal.h>
 # include <unistd.h>
-# define BUILTIN	"echo cd pwd export unset env exit"
 # define MINISHELL_OK	0
 # define MINISHELL_ERR	1
+# define MINISHELL_PREV	0
+# define MINISHELL_NEXT	1
 
 typedef struct		s_arg
 {
@@ -19,17 +20,18 @@ typedef struct		s_arg
 	int				type;
 }					t_arg;
 
-typedef struct		s_exe
+typedef struct		s_task
 {
-	struct s_exe	*prev;
-	struct s_exe	*next;
+	struct s_task	*prev;
+	struct s_task	*next;
 	char			**argv;
 	int				fd[2];
 	int				pipe_fd[2];
 	int				ret;
 	int				status;
+	int				is_exit;
 	pid_t			pid;
-}					t_exe;
+}					t_task;
 
 typedef struct		s_env
 {
@@ -41,102 +43,89 @@ typedef struct		s_env
 
 /*
 **	===========================================================================
-**	minishell.c
+**	minishell.c ---------------------------------------------------------------
 */
-void	print_prompt(int option);
-
-void	handler(int signo);
-int		return_value(int option, int set_num);
-int		print_env();
-
+void				print_prompt(int option);
 /*
-**	===========================================================================
-**	error_handler.c
+**	get_command_line.c --------------------------------------------------------
 */
-void	print_err();
-int		ft_strsignal_pt1(int status);
-int		ft_strsignal_pt2(int status);
-void	handler_signal(int signo);
-
-
+int					check_syntax(t_arg **arg);
+t_arg				*get_command_line(t_env *lstenv);
 /*
-**	===========================================================================
-**	process_terminater.c
+**	check_flag.c --------------------------------------------------------------
 */
-void	process_terminater(t_exe *exe, int	size);
-
-
+int					check_flag(char **c, int *flag);
 /*
-**	===========================================================================
-**	extract_word.c
+**	extract_word.c ------------------------------------------------------------
 */
-t_str	*extract_word(char **str, int *flag, t_env *lstenv, int *type);
+t_str				*extract_word(\
+							char **str, int *flag, t_env *lstenv, int *type);
 /*
-**	===========================================================================
-**	get_command_line.c
+**	build_task_tree.c ---------------------------------------------------------
 */
-t_arg	*get_command_line(t_env *lstenv);
-int		check_syntax(t_arg **arg);
+t_task				*task_new(t_task *current, int arg_size);
+t_task				*build_task_tree(t_arg **arg, int arg_size);
+int					arg_rewind(t_arg **arg);
+void				argv_append(t_task *task, t_arg *arg);
 /*
-**	===========================================================================
-**	check_flag.c
+**	path_finder.c -------------------------------------------------------------
 */
-int		check_flag(char **c, int *flag);
+int					path_finder(char **file, t_env **lstenv);
 /*
-**	===========================================================================
-**	build_exe_tree.c
+**	redirection_manage.c ------------------------------------------------------
 */
-t_exe	*build_exe_tree(t_arg **arg, int arg_size);
-void	exe_clear(t_exe **exe);
-int		arg_rewind(t_arg **arg);
-void	arg_clear(t_arg **arg);
-
-
+int					redirection_manage(t_task **task, t_arg **arg, int arg_size);
 /*
-**	===========================================================================
-**	execute_arg.c
+**	execute_task.c ------------------------------------------------------------
 */
-int		execute_shell(t_exe *exe, t_env **lstenv);
-
+void				execute_task(t_task *task, t_env **lstenv);
+/*
+**	process_terminater.c ------------------------------------------------------
+*/
+void				arg_clear(t_arg **arg);
+void				task_clear(t_task **task);
+int					return_value(int option, int set_num);
+void				process_terminater(t_task *task);
+/*
+**	error_handler.c -----------------------------------------------------------
+*/
+void				print_err(char *str);
+int					ft_strsignal_pt1(int status);
+int					ft_strsignal_pt2(int status);
+void				handler_signal(int signo);
 /*
 **	===========================================================================
 **	builtin function
-*/
-/*
 **	builtin_env.c -------------------------------------------------------------
 */
-// t_env	*env_new(char *str, t_env *current);
-t_env	*env_new(char *str);
-int		print_env(t_env *env);
-void	env_init(t_env **lstenv, char **env);
-char	**env_to_arr(t_env *env);
-int		ft_env(char **argv, t_env **lstenv);
+t_env				*env_new(char *str);
+void				env_init(t_env **lstenv, char **env);
+char				**env_to_arr(t_env *env);
+int					ft_env(char **argv, t_env **lstenv);
 /*
 **	builtin_echo.c ------------------------------------------------------------
 */
-int		ft_echo(char **argv, t_env **lstenv);
+int					ft_echo(char **argv, t_env **lstenv);
 /*
 **	builtin_cd.c --------------------------------------------------------------
 */
-int		ft_cd(char **argv, t_env **lstenv);
+int					ft_cd(char **argv, t_env **lstenv);
 /*
 **	builtin_pwd.c -------------------------------------------------------------
 */
-int		ft_pwd(char **argv, t_env **lstenv);
+int					ft_pwd(char **argv, t_env **lstenv);
 /*
 **	builtin_export.c ----------------------------------------------------------
 */
-int		ft_export(char **argv, t_env **lstenv);
-int		add_val(char *str, t_env **lstenv);
+int					add_val(char *str, t_env **lstenv);
+int					ft_export(char **argv, t_env **lstenv);
 /*
 **	builtin_unset.c -----------------------------------------------------------
 */
-int		ft_unset(char **argv, t_env **lstenv);
+int					ft_unset(char **argv, t_env **lstenv);
 /*
 **	builtin_exit.c ------------------------------------------------------------
 */
-ssize_t	ft_atoi_ssizet(char *str, int *flag);
-int		ft_exit(char **argv, t_env **lstenv);
-
+int					ft_exit(char **argv, t_env **lstenv);
 
 #endif

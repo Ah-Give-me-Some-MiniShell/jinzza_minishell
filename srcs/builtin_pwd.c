@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 20:52:54 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 23:49:25 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/24 15:57:18 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 int		ft_pwd(char **argv, t_env **lstenv)
 {
-	int		ret;
 	char	buffer[1000];
 	char	*result;
 
+	(void)argv;
+	(void)lstenv;
 	result = getcwd(buffer, 1000);
 	ft_putstr_fd(buffer, 1);
 	ft_putstr_fd("\n", 1);

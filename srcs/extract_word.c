@@ -6,38 +6,24 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 16:19:10 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 17:49:52 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 14:30:41 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "minishell_flag.h"
 
-// t_str	*extract_env(char **str, int *flag, t_env *lstenv)
-// {
-// 	char	*start;
-// 	char	*key;
-// 	t_str	*result;
+void	extract_return_value(char **str, t_str **result)
+{
+	char			*tmp;
+	unsigned char	n;
 
-// 	start = ++(*str);
-// 	while (**str && (ft_isalnum(**str) || **str == '_'))
-// 		(*str)++;
-// 	key = ft_substr(start, 0, *str - start);
-// 	while (lstenv)
-// 	{
-// 		if (ft_strcmp(key, lstenv->key))
-// 		{
-// 			lstenv = lstenv->next;
-// 			continue ;
-// 		}
-// 		result = ft_str_new(lstenv->val);
-// 		break ;
-// 	}
-// 	free(key);
-// 	*flag ^= ENV;
-// 	(*str)--;
-// 	return (result);
-// }
+	(*str)++;
+	n = return_value(0, 0);
+	tmp = ft_itoa(n);
+	*result = ft_str_new(tmp);
+	free(tmp);
+}
 
 t_str	*extract_env(char **str, int *flag, t_env *lstenv)
 {
@@ -50,12 +36,7 @@ t_str	*extract_env(char **str, int *flag, t_env *lstenv)
 		(*str)++;
 	key = ft_substr(start, 0, *str - start);
 	if (!*key && **str == '?')
-	{
-		(*str)++;
-		start = ft_itoa(return_value(0,0));
-		result = ft_str_new(start);
-		free(start);
-	}
+		extract_return_value(str, &result);
 	else
 	{
 		while (lstenv && ft_strcmp(key, lstenv->key))
@@ -71,8 +52,7 @@ t_str	*extract_env(char **str, int *flag, t_env *lstenv)
 	return (result);
 }
 
-
-t_str	*extract_redirection(char **str, int *flag, t_env *lstenv, int *type)
+t_str	*extract_redirection(char **str, int *flag, int *type)
 {
 	t_str	*word;
 	
@@ -93,7 +73,7 @@ t_str	*extract_redirection(char **str, int *flag, t_env *lstenv, int *type)
 	return (word);
 }
 
-void	pass_blank(char **str, int *flag, t_env *lstenv, int *type)
+void	pass_blank(char **str, int *flag)
 {
 	while (**str && (*flag & BLANK))
 	{
@@ -110,7 +90,7 @@ t_str	*extract_word(char **str, int *flag, t_env *lstenv, int *type)
 	t_str	*word;
 	
 	if (*flag & (RE_IN | RE_OUT | RE_APP | RE_PIPE | ENDLINE))
-		return (extract_redirection(str, flag, lstenv, type));
+		return (extract_redirection(str, flag, type));
 	word = ft_str_new("");
 	*type = 0;
 	while (**str)
@@ -123,7 +103,7 @@ t_str	*extract_word(char **str, int *flag, t_env *lstenv, int *type)
 			break ;
 		(*str)++;
 	}
-	pass_blank(str, flag, lstenv, type);
+	pass_blank(str, flag);
 	if (*word->str || !**str)
 		return (word);
 	else

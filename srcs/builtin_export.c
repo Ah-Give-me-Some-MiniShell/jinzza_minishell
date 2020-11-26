@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minckim <minckim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 00:19:51 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/20 22:32:37 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/24 15:57:40 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,8 @@ t_env	**sort_env(t_env *lstenv)
 
 int		ft_export(char **argv, t_env **lstenv)
 {
-	t_env	*node;
 	t_env	**array;
 	t_env	**array_head;
-	int		size;
 
 	if (!argv[1])
 	{

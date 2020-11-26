@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/12 11:29:22 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/17 23:45:41 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 03:50:29 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ int	check_syntax(t_arg **arg)
 	return (0);
 }
 
-
-
-
 t_arg	*arg_new(t_arg *curr, t_str *str, int type)
 {
 	t_arg	*result;
@@ -58,9 +55,11 @@ t_arg	*arg_new(t_arg *curr, t_str *str, int type)
 	return (result);
 }
 
-#define GCL_FLAG
-#define GCL_TYPE
-#define GCL_FLAG
+void	say_goodbye()
+{
+	ft_putstr_fd(I_GREEN"Bye Bye\n"WHITE, 1);
+	exit(0);
+}
 
 t_arg	*get_command_line(t_env *lstenv)
 {
@@ -72,13 +71,10 @@ t_arg	*get_command_line(t_env *lstenv)
 
 	arg = arg_new(0, ft_str_new(""), 0);
 	flag = 0;
-	while (1)
+	while (42)
 	{
 		if (get_next_line(0, &cmdline) == 0)
-		{
-			ft_putstr_fd(I_GREEN"Bye Bye\n"WHITE, 1);
-			exit(0);
-		}
+			say_goodbye();
 		cmdline_head = cmdline;
 		arg->str = ft_str_join_free(arg->str, 
 			extract_word(&cmdline, &flag, lstenv, &type));

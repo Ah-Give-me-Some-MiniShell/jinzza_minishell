@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minckim <minckim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 13:21:17 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/20 22:33:15 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 17:59:44 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,36 @@
 void	print_ascii_art(char *path)
 {
 	int		fd;
-	char	buffer[1000];
-	int		n_read;
+	int		ret;
+	char	*line;
 
 	if ((fd = open(path, O_RDONLY)) < 0)
+	{
+		print_err(path);
 		return ;
-	while ((n_read = read(0, buffer, 1000)))
-		write(1, buffer, n_read);
+	}
+	while (1)
+	{
+		ret = get_next_line(fd, &line);
+		ft_printf(GREEN"%s\n"WHITE, line);
+		free(line);
+		if (!ret)
+			break ;
+	}
+	close(fd);
 }
 
 void	print_prompt(int option)
 {
 	if (option)
 		ft_putstr_fd("  \n", 1);
-	ft_putstr_fd(\
-	I_GREEN"국립국어원 외래어 표기법에 따르면 쉘(X) 셸(O) 입니다 > "WHITE, 1);
+	ft_putstr_fd(I_CYAN"드디어 끝났다!! "B_GREEN">> "WHITE, 1);
 }
 
 void	minishell(t_env **lstenv)
 {
 	t_arg	*arg;
-	t_exe	*exe;
-	t_exe	*head;
+	t_task	*task;
 	int		size;
 
 	print_prompt(0);
@@ -46,21 +54,15 @@ void	minishell(t_env **lstenv)
 	check_syntax(&arg);
 	while (arg)
 	{
-		exe = build_exe_tree(&arg, size);
-		while (exe && exe->prev)
-			exe = exe->prev;
-		head = exe;
-		if (exe && exe->argv && *exe->argv && **exe->argv)
+		task = build_task_tree(&arg, size);
+		while (task && task->prev)
+			task = task->prev;
+		if (task && task->argv && *task->argv && **task->argv)
 		{
-			while (exe)
-			{
-				execute_shell(exe, lstenv);
-				exe = exe->next;
-			}
-			exe = head;
-			process_terminater(exe, size);
+			execute_task(task, lstenv);
+			process_terminater(task);
 		}
-		exe_clear(&exe);
+		task_clear(&task);
 		if (!(arg->next))
 			break;
 		arg = arg->next;
@@ -72,7 +74,9 @@ int		main(int argc, char **argv, char **env)
 {
 	t_env	*lstenv;
 
-	print_ascii_art("../img/ascii_art");
+	(void)argc;
+	(void)argv;
+	print_ascii_art("./img/ascii_art");
 	signal(SIGINT, handler_signal);
 	signal(SIGQUIT, handler_signal);
 	env_init(&lstenv, env);
@@ -80,5 +84,5 @@ int		main(int argc, char **argv, char **env)
 	{
 		minishell(&lstenv);
 	}
-
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minckim <minckim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 13:54:24 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/20 14:26:27 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/26 13:46:52 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,13 @@ ssize_t	ft_atoi_ssizet(char *str, int *flag)
 	if (!str || !*str)
 		return (0);
 	n = 0;
-	sign = 1;
 	while ((9 <= *str && *str <= 13) || *str == 32)
 		str++;
-	if (*str == '-')
-	{
-		sign = -1;
-		str++;
-	}
-	else if (*str == '+')
-		str++;
+	sign = *str == '-' ? -1 : 1;
+	str += *str == '-' || *str == '+' ? 1 : 0;
 	while ('0' <= *str && *str <= '9')
 	{
-		n *= 10;
-		n += *str++ - '0';
+		n = n * 10 + *str++ - '0';
 		if (n > 9223372036854775807)
 		{
 			*flag |= FLAG_OVERFLOW;
