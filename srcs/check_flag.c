@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 21:57:21 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/12 11:10:02 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/28 13:06:40 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,26 @@ int		check_flag_s_quote(char c, int *flag)
 	return (c);
 }
 
-int		check_flag_d_quote(char c, int *flag)
+int		check_flag_d_quote(char *c, int *flag)
 {
-	if (c == '\"')
+	if (*c == '\"')
 	{
 		*flag ^= D_QUOTE;
 		return (0);
 	}
-	if (c == '$')
+	if (*c == '$')
 	{
 		*flag |= ENV;
 		return (0);
 	}
-	if (c == '\\')
+	if (*c == '\\')
 	{
 		*flag |= ESCAPE;
-		return (c);
+		if (c[1] == '\"')
+			return (0);
+		return (*c);
 	}
-	return (c);
+	return (*c);
 }
 
 int		check_flag_on(char **c, int *flag)
@@ -78,7 +80,7 @@ int		check_flag(char **c, int *flag)
 	if (*flag & S_QUOTE)
 		return (check_flag_s_quote(**c, flag));
 	if (*flag & D_QUOTE)
-		return (check_flag_d_quote(**c, flag));
+		return (check_flag_d_quote(*c, flag));
 	if (*flag & BLANK)
 	{
 		if (**c == ' ' || **c == '\t')
