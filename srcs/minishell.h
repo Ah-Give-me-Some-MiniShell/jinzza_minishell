@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 20:02:02 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/26 20:03:52 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/29 14:57:38 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <dirent.h>
 # include <signal.h>
 # include <unistd.h>
+# include <errno.h>
 # define MINISHELL_OK	0
 # define MINISHELL_ERR	1
 # define MINISHELL_PREV	0

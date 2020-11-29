@@ -6,7 +6,7 @@
 #    By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 16:34:45 by yujo              #+#    #+#              #
-#    Updated: 2020/11/26 21:37:01 by minckim          ###   ########.fr        #
+#    Updated: 2020/11/29 14:38:57 by minckim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,10 +50,11 @@ FILE_TESTCASE_SRCS = \
 # Basic settings
 # -----------------------------------------------------------------------------
 DIR_SRCS = ./srcs/
+DIR_OBJS = ./objs/
 DIR_TESTCASE_SRCS = ./test_case/
 
 SRCS = $(addprefix $(DIR_SRCS), $(addsuffix .c, $(FILE_SRCS)))
-OBJS = $(addprefix $(DIR_SRCS), $(addsuffix .o, $(FILE_SRCS)))
+OBJS = $(addprefix $(DIR_OBJS), $(addsuffix .o, $(FILE_SRCS)))
 
 TESTCASE_SRCS = $(addprefix $(DIR_TESTCASE_SRCS), $(addsuffix .c, $(FILE_TESTCASE_SRCS)))
 TESTCASE_EXE = $(FILE_TESTCASE_SRCS)
@@ -83,6 +84,48 @@ SLEEPTIME = 0.1
 # -----------------------------------------------------------------------------
 all : $(NAME)
 
+
+$(LIBFT) :
+	@make -C $(LIBFT_DIR)
+
+# $(NAME) : $(LIBFT) $(OBJS)
+
+$(NAME) : print_title $(LIBFT) $(OBJS)
+	@$(CC) $(FLAG) -o $(NAME) $(OBJS) -lft -L$(LIBFT_DIR)
+	@echo $(GREEN)"- Done"$(WHITE)
+
+run : $(NAME)
+	@./$(NAME)
+
+$(TESTCASE_EXE) : $(TESTCASE_SRCS)
+	gcc $(addprefix $(DIR_TESTCASE_SRCS), $@.c) -o $@
+
+$(DIR_OBJS)%.o: $(DIR_SRCS)%.c
+	$(CC) $(FLAG) -c $< -o $@
+
+re : fclean $(NAME)
+
+clean :
+	@echo $(YELLOW)"Removing minishell object files..."$(WHITE)
+	@$(RM) $(OBJS)
+	@$(RM) $(TESTCASE_EXE)
+	@make clean -C $(LIBFT_DIR)
+
+fclean : clean
+	@echo $(YELLOW)"Removing libft.a..."$(WHITE)
+	@$(RM) $(LIBFT_DIR)libft.a
+	@echo $(YELLOW)"Removing minishell..."$(WHITE)
+	@$(RM) $(NAME)
+
+test: $(TESTCASE_EXE)
+
+leaks:
+	@while true; do leaks minishell; sleep 1; done;
+
+norm:
+	norminette $(DIR_SRCS)*.c $(DIR_SRCS)*.h
+	norminette $(LIBFT_DIR)*.c
+
 print_title :
 	@clear
 	@echo $(RED)
@@ -110,44 +153,3 @@ print_title :
 	@sleep $(SLEEPTIME)
 	@echo $(WHITE)
 	@clear
-
-$(LIBFT) :
-	@make -C $(LIBFT_DIR)
-
-# $(NAME) : $(LIBFT) $(OBJS)
-
-$(NAME) : print_title $(LIBFT) $(OBJS)
-	@$(CC) $(FLAG) -o $(NAME) $(OBJS) -lft -L$(LIBFT_DIR)
-	@echo $(GREEN)"- Done"$(WHITE)
-
-run : $(NAME)
-	@./$(NAME)
-
-$(TESTCASE_EXE) : $(TESTCASE_SRCS)
-	gcc $(addprefix $(DIR_TESTCASE_SRCS), $@.c) -o $@
-
-%.o : %.c
-	$(CC) $(FLAG) -c $*.c -o $@
-
-re : fclean $(NAME)
-
-clean :
-	@echo $(YELLOW)"Removing minishell object files..."$(WHITE)
-	@$(RM) $(OBJS)
-	@$(RM) $(TESTCASE_EXE)
-	@make clean -C $(LIBFT_DIR)
-
-fclean : clean
-	@echo $(YELLOW)"Removing libft.a..."$(WHITE)
-	@$(RM) $(LIBFT_DIR)libft.a
-	@echo $(YELLOW)"Removing minishell..."$(WHITE)
-	@$(RM) $(NAME)
-
-test: $(TESTCASE_EXE)
-
-leaks:
-	@while true; do leaks minishell; sleep 1; done;
-
-norm:
-	norminette $(DIR_SRCS)*.c $(DIR_SRCS)*.h
-	norminette $(LIBFT_DIR)*.c
