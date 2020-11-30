@@ -6,7 +6,7 @@
 /*   By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 17:56:55 by minckim           #+#    #+#             */
-/*   Updated: 2020/11/29 15:04:41 by minckim          ###   ########.fr       */
+/*   Updated: 2020/11/30 22:18:41 by minckim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	print_err(char *str)
 
 	ft_puterr(I_RED);
 	ft_puterr(str);
+	ft_puterr(": ");
 	ft_puterr(strerror(errno));
 	ft_puterr("\n");
 	ft_puterr(WHITE);
