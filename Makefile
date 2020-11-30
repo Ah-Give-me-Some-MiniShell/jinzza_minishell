@@ -6,7 +6,7 @@
 #    By: minckim <minckim@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/15 16:34:45 by yujo              #+#    #+#              #
-#    Updated: 2020/11/29 14:38:57 by minckim          ###   ########.fr        #
+#    Updated: 2020/11/30 21:40:43 by minckim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,9 +90,12 @@ $(LIBFT) :
 
 # $(NAME) : $(LIBFT) $(OBJS)
 
-$(NAME) : print_title $(LIBFT) $(OBJS)
+$(NAME) : print_title $(DIR_OBJS) $(LIBFT) $(OBJS)
 	@$(CC) $(FLAG) -o $(NAME) $(OBJS) -lft -L$(LIBFT_DIR)
 	@echo $(GREEN)"- Done"$(WHITE)
+
+$(DIR_OBJS) :
+	mkdir $(DIR_OBJS)
 
 run : $(NAME)
 	@./$(NAME)
@@ -107,7 +110,7 @@ re : fclean $(NAME)
 
 clean :
 	@echo $(YELLOW)"Removing minishell object files..."$(WHITE)
-	@$(RM) $(OBJS)
+	@$(RM) $(DIR_OBJS)
 	@$(RM) $(TESTCASE_EXE)
 	@make clean -C $(LIBFT_DIR)
 
@@ -153,3 +156,5 @@ print_title :
 	@sleep $(SLEEPTIME)
 	@echo $(WHITE)
 	@clear
+
+.PHONY: all bonus clean fclean re
